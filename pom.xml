@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.baidu.oped.sia.business</groupId>
+    <artifactId>Demo</artifactId>
+
+    <parent>
+        <groupId>com.baidu.oped.sia.boot</groupId>
+        <artifactId>custom-boot-starters</artifactId>
+        <version>0.0.1</version>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.baidu.oped.sia.boot</groupId>
+            <artifactId>custom-boot-autoconfigure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baidu.oped.sia.boot</groupId>
+            <artifactId>custom-boot-starter-iplist</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baidu.oped.sia.boot</groupId>
+            <artifactId>custom-boot-starter-limit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baidu.oped.sia.boot</groupId>
+            <artifactId>custom-boot-starter-iam</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baidu.oped.sia.boot</groupId>
+            <artifactId>custom-boot-starter-i18n</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baidu.oped.sia.boot</groupId>
+            <artifactId>custom-boot-starter-springfox</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baidu.oped.sia.boot</groupId>
+            <artifactId>custom-boot-starter-trace</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baidu.oped.sia.boot</groupId>
+            <artifactId>custom-boot-starter-resolver</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baidu.oped.sia.boot</groupId>
+            <artifactId>custom-boot-starter-profiling</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>
