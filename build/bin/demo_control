@@ -1,0 +1,170 @@
+#! /bin/sh
+#
+# init babysitter
+#
+# description: Babysitter Management 
+#
+# processname: babysitter_control 
+
+readonly COMMAND='./babysitter'
+readonly START_TIMEOUT=1
+readonly STOP_TIMEOUT=10
+readonly KILL_TIMEOUT=15
+readonly PROGRAM='babysitter'
+
+readonly READLINK='readlink'
+readonly READ='read -t 1'
+readonly SLEEP='sleep'
+readonly PIDOF='pidof'
+readonly GREP='fgrep'
+readonly KILL='kill'
+readonly EXPR='expr'
+readonly ECHO='echo'
+readonly RM='rm -f'
+readonly AWK='awk'
+readonly PS='ps'
+readonly CONF_PATH=" ../conf/babysitter.conf"
+
+getpid()
+{
+    local pid_of_babysitter 
+
+    PID=0
+    #this method CANNOT work because of babysitter, you CANNOT define one babysitter progress by grep ${EXEC_CMD}
+    pid_of_babysitter=$(${PS} ax | grep "${EXEC_CMD}" | grep -v grep| ${AWK} '{print $1}')
+    if [ $? -eq 0 ]; then
+        if [ -z "${pid_of_babysitter:-}" ]; then
+            PID=0
+            return 1
+        else
+            PID=${pid_of_babysitter}
+        fi
+
+        if [ -n "${PID:-}" ]; then
+            return 0
+        fi
+    fi
+
+    return 1
+}
+
+start()
+{
+    local ret i
+    ${ECHO} "start ${PROGRAM}..."
+    for i in 1 2 3 ; do
+        sleep 1
+        ${EXEC_CMD} start
+        if [ "$?" -ne 0 ]; then
+            RETVAL=1
+        else
+            ${ECHO} "[success] succeed to start ${PROGRAM}." 1>&2
+            RETVAL=0
+            return 0
+        fi
+    done
+    ${ECHO} "[FAIL] Failed to start ${PROGRAM}." 1>&2
+    return ${RETVAL}
+}
+
+stop()
+{
+    local ret i
+    for i in 1 2 3; do
+        ${EXEC_CMD} stop
+        sleep 2
+        ret=$?
+        if [ ${ret} -eq "0" ]; then
+            ${ECHO} "[OK] ${PROGRAM} stop succeed"
+            RETVAL=0;
+            return ${RETVAL}
+        fi
+        sleep 2
+    done
+
+    echo "[FAIL] Failed to stop ${PROGRAM}." 1>&2
+    RETVAL=1;
+    return 1
+}
+
+status()
+{
+    check
+    RETVAL=$?
+    if [ "${RETVAL}" -eq 0 ]; then
+        ${ECHO} "[OK] ${PROGRAM} is running."
+    else
+        ${ECHO} "[FAIL] ${PROGRAM} is not running."
+    fi
+
+    return ${RETVAL}
+}
+
+reload()
+{
+    ${EXEC_CMD} reload
+    RETVAL=$?
+    if [ "${RETVAL}" -eq "0" ]; then
+        ${ECHO} "{OK] ${PROGRAM} reload succeed."
+    else
+        ${ECHO} "{FAIL] ${PROGRAM} reload failed."
+    fi
+    return "${RETVAL}"
+}
+
+check()
+{
+    ${EXEC_CMD} check 2>&1 1>/dev/null
+    RETVAL=$?
+    if [ "${RETVAL}" -ne "0" ]; then
+        ${ECHO} "[NOTICE] ${PROGRAM} check not running ."
+    fi
+    return "${RETVAL}"
+}
+
+usage()
+{
+    ${ECHO} "usge: ${0} {start|stop|restart|reload|status|check}"
+}
+
+CONTROL_PATH=$(cd "$(dirname "$0")" && pwd)
+cd "${CONTROL_PATH}"
+unset EXEC_CMD
+if [ "$#" -ne "1" ]; then
+    usage
+fi
+
+#EXEC_CMD=${COMMAND}" ../conf/babysitter.conf"
+EXEC_CMD="${COMMAND}${CONF_PATH}"
+
+RETVAL=1
+case "${1}" in
+    *restart)
+    stop
+    sleep 1
+    start
+    ;;
+
+    *start)
+    start
+    ;;
+
+    *stop)
+    stop
+    ;;
+
+    *status)
+    #status
+    check
+    ;;
+    *check)
+    check
+    ;;
+    *reload)
+    reload
+    ;;
+    *)
+    usage
+    ;;
+esac
+exit ${RETVAL}
