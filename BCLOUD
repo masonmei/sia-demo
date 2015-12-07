@@ -1,0 +1,2 @@
+MODULE=com/baidu/demo
+BUILD_SUBMITTER -x -u . -c "cd com/baidu/demo && sh +x build.sh" -m com/baidu/demo
