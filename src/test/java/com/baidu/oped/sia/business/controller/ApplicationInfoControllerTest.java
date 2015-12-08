@@ -42,10 +42,10 @@ public class ApplicationInfoControllerTest {
         mvc.perform(get("/application/info"))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(content().json("{\"version\":\"0.0.1\"," +
-                        "\"department\":\"oped\"," +
-                        "\"description\":\"Demo程序\"," +
-                        "\"contact\":\"meidongxu@baidu.com\"}"))
+                .andExpect(content().json("{\"version\":\"0.0.1\","
+                        + "\"department\":\"oped\","
+                        + "\"description\":\"Demo程序\","
+                        + "\"contact\":\"meidongxu@baidu.com\"}"))
                 .andExpect(jsonPath("$.version", is("0.0.1")))
         ;
     }
