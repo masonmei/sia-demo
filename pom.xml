@@ -5,11 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.baidu.oped.sia.business</groupId>
+    <version>0.0.1-SNAPSHOT</version>
     <artifactId>Demo</artifactId>
 
     <parent>
         <groupId>com.baidu.oped.sia.boot</groupId>
-        <artifactId>custom-boot-starters</artifactId>
+        <artifactId>custom-boot-starter-parent</artifactId>
         <version>0.0.2-SNAPSHOT</version>
     </parent>
 
