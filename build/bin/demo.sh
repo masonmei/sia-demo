@@ -31,9 +31,23 @@ checkUlimit()
     return ${RETVAL}
 }
 
+findProcess()
+{
+    CURRENT_DIR=`dirname $0`
+    CURRENT_DIR=`cd ${CURRENT_DIR}; pwd`
+
+    cd ..
+    BASE_DIR=`pwd`
+    echo "BASE_DIR dir:"${BASE_DIR}
+    cd ${CURRENT_DIR}
+
+    RET=`ps aux | grep ${MAIN_CLASS} | grep ${BASE_DIR} | grep -v "grep"`
+    return 0
+}
+
 checkProcess()
 {
-    RET=`ps aux | grep ${MAIN_CLASS} | grep -v "grep"`
+    findProcess
 #    echo "${RET}"
     if [ -n "${RET}" ];then
         echo ${RET} |awk '{print $2}' >${PROJECT}.pid
@@ -112,14 +126,14 @@ start()
     fi
 
     echo "Setting up environment variable..."
-    JAVA_HOME=${WORK_DIR}/java7
+    JAVA_HOME=${WORK_DIR}/java8
 
     CLASSPATH=.:${JAVA_HOME}/lib/dt.jar:${JAVA_HOME}/lib.tools.jar
     CLASSPATH=${CLASSPATH}:${CONF_DIR}
 
     export CLASSPATH
 
-    JAVA_ARGS="-server -Xmx8096m -Xms8096m -Xmn2048m -XX:SurvivorRatio=8 -XX:PermSize=512m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSClassUnloadingEnabled -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=80 -XX:+UseCMSCompactAtFullCollection -XX:CMSFullGCsBeforeCompaction=0 -XX:-CMSParallelRemarkEnabled -XX:SoftRefLRUPolicyMSPerMB=0 -XX:MaxTenuringThreshold=7 -Xloggc:${LOGS_DIR}/${PROJECT}-gc.log -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:+PrintHeapAtGC -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=20M"
+    JAVA_ARGS="-server -Xmx8096m -Xms8096m -Xmn2048m -XX:SurvivorRatio=8 -XX:PermSize=512m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSClassUnloadingEnabled -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=80 -XX:+UseCMSCompactAtFullCollection -XX:CMSFullGCsBeforeCompaction=0 -XX:-CMSParallelRemarkEnabled -XX:SoftRefLRUPolicyMSPerMB=0 -XX:MaxTenuringThreshold=7 -Xloggc:${LOGS_DIR}/${PROJECT}-gc.log -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:+PrintHeapAtGC -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=20M -Djava.io.tmpdir=tmp"
 
     if [ -f ${LOGS_DIR}/gc.log ];then
         mv ${LOGS_DIR}/gc.log ${LOGS_DIR}/gc.log.${DATE}
@@ -153,7 +167,7 @@ stop()
         return ${RETVAL}
     fi
 
-    SERVER_PIDS=`ps aux | grep ${MAIN_CLASS} | grep -v "grep"| awk '{print $2}'`
+    SERVER_PIDS=`echo ${RET} | awk '{print $2}'`
     for id in $SERVER_PIDS;do
        kill -9 ${id}
        echo "kill process,pid:${id}"

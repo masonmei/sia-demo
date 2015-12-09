@@ -105,7 +105,7 @@ do
     done
 
     echo `pwd`
-    tar -czf ${PACKAGE_NAME} `ls ${OUTPUT_DIR}`
+    tar -czf ${PACKAGE_NAME} `ls ${OUTPUT_DIR} | grep -v ".tar.gz"`
     if [ $? -ne 0 ]; then
         echo "create "${PACKAGE_NAME} "failed!"
         exit 2
