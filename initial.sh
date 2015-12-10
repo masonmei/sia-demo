@@ -1,5 +1,14 @@
 #!/bin/bash
 
+checkOs(){
+    cygwin=false
+    darwin=false
+    case "`uname`" in
+    Linux*) linux=true;;
+    Darwin*) darwin=true;;
+    esac
+}
+
 initIfNotExist(){
     if [ ! -f ${property_file} ];
     then
@@ -75,13 +84,25 @@ applyChange(){
     mv ${WORK_DIR}/build/bin/${project_name}.sh ${WORK_DIR}/build/bin/${new_project_name}.sh
     mv ${WORK_DIR}/build/bin/${project_name}_control ${WORK_DIR}/build/bin/${new_project_name}_control
 
-    sed -i '' -e "1,10s%^readonly PROJECT=${project_name}%readonly PROJECT=${new_project_name}%g" ${WORK_DIR}/build/bin/${new_project_name}.sh
-    sed -i '' -e "1,10s%^readonly MAIN_PORT=${project_port}%readonly MAIN_PORT=${new_project_port}%g" ${WORK_DIR}/build/bin/${new_project_name}.sh
+    if ${darwin}; then
+        sed -i '' -e "1,10s%^readonly PROJECT=${project_name}%readonly PROJECT=${new_project_name}%g" ${WORK_DIR}/build/bin/${new_project_name}.sh
+        sed -i '' -e "1,10s%^readonly MAIN_PORT=${project_port}%readonly MAIN_PORT=${new_project_port}%g" ${WORK_DIR}/build/bin/${new_project_name}.sh
 
-    sed -i '' -e "1,10s%^PROJECT_NAME=${project_name}%PROJECT_NAME=${new_project_name}%g" ${WORK_DIR}/build.sh
+        sed -i '' -e "1,10s%^PROJECT_NAME=${project_name}%PROJECT_NAME=${new_project_name}%g" ${WORK_DIR}/build.sh
 
-    sed -i '' -e "1s%${project_deploy_path}%${new_project_deploy_path}%g" ${WORK_DIR}/build/conf/babysitter.conf
-    sed -i '' -e "2,\$s%${project_name}%${new_project_name}%g" ${WORK_DIR}/build/conf/babysitter.conf
+        sed -i '' -e "1s%${project_deploy_path}%${new_project_deploy_path}%g" ${WORK_DIR}/build/conf/babysitter.conf
+        sed -i '' -e "2,\$s%${project_name}%${new_project_name}%g" ${WORK_DIR}/build/conf/babysitter.conf
+    fi
+
+    if ${linux}; then
+        sed -i -e "1,10s%^readonly PROJECT=${project_name}%readonly PROJECT=${new_project_name}%g" ${WORK_DIR}/build/bin/${new_project_name}.sh
+        sed -i -e "1,10s%^readonly MAIN_PORT=${project_port}%readonly MAIN_PORT=${new_project_port}%g" ${WORK_DIR}/build/bin/${new_project_name}.sh
+
+        sed -i -e "1,10s%^PROJECT_NAME=${project_name}%PROJECT_NAME=${new_project_name}%g" ${WORK_DIR}/build.sh
+
+        sed -i -e "1s%${project_deploy_path}%${new_project_deploy_path}%g" ${WORK_DIR}/build/conf/babysitter.conf
+        sed -i -e "2,\$s%${project_name}%${new_project_name}%g" ${WORK_DIR}/build/conf/babysitter.conf
+    fi
 
     echo "Application configuration applied."
 }
@@ -93,6 +114,7 @@ echo "Work dir: ${WORK_DIR}"
 
 property_file=${WORK_DIR}/.app_meta
 
+checkOs
 initIfNotExist
 
 source ${property_file}
