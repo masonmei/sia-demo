@@ -4,7 +4,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * Created by mason on 12/3/15.
+ * Application Propertity Configuration
+ *
+ * @author mason
  */
 @Component
 @ConfigurationProperties(prefix = "project")
@@ -19,6 +21,9 @@ public class ApplicationProperties {
         this.info = info;
     }
 
+    /**
+     * Application Info.
+     */
     public static class Info {
         private String version;
         private String description;
