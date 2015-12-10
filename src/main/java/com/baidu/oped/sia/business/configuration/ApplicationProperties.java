@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * Application Propertity Configuration
+ * Application Propertity Configuration.
  *
  * @author mason
  */
