@@ -1,7 +1,7 @@
 #!/bin/bash
 
 checkOs(){
-    cygwin=false
+    linux=false
     darwin=false
     case "`uname`" in
     Linux*) linux=true;;
