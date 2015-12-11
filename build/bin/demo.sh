@@ -19,6 +19,7 @@ usage()
 
 checkUlimit()
 {
+    echo "enter checkULimit"
     RET=`ulimit -n`
 #    echo "${RET}"
     if [ ${RET} -lt 10000 ];then
@@ -33,6 +34,7 @@ checkUlimit()
 
 findProcess()
 {
+    echo "enter findProcess"
     CURRENT_DIR=`dirname $0`
     CURRENT_DIR=`cd ${CURRENT_DIR}; pwd`
 
@@ -47,6 +49,7 @@ findProcess()
 
 checkProcess()
 {
+    echo "enter checkProcess"
     findProcess
 #    echo "${RET}"
     if [ -n "${RET}" ];then
@@ -61,6 +64,7 @@ checkProcess()
 
 checkPort()
 {
+    echo "enter checkPort"
     RET=`netstat -anp|grep ${MAIN_PORT}`
 #    echo "${RET}"
     if [ -n "${RET}" ];then
@@ -74,6 +78,7 @@ checkPort()
 
 check()
 {
+    echo "enter check"
     echo ${DATE} ${PROJECT} ${ACTION} "begin!"
     checkProcess
     PROCESS=`echo $?`
@@ -91,6 +96,7 @@ check()
 
 start()
 {
+    echo "enter start"
     echo ${DATE} ${PROJECT} ${ACTION} "begin!"
 
     checkProcess
@@ -157,6 +163,7 @@ start()
 
 stop()
 {
+    echo "enter stop"
     echo ${DATE} ${PROJECT} ${ACTION} "begin!"
 
     checkProcess
