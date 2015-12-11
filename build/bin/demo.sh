@@ -23,6 +23,7 @@ init()
 
     SCRIPT_DIR=`dirname $0`
     SCRIPT_DIR=`cd ${SCRIPT_DIR}; pwd`
+    cd ${SCRIPT_DIR}
 
     cd ..
     BASE_DIR=`pwd`
@@ -116,15 +117,15 @@ start()
         return ${RETVAL}
     fi
 
-    LOGS_DIR=${WORK_DIR}/log
-    CONF_DIR=${WORK_DIR}/conf
+    LOGS_DIR=${BASE_DIR}/log
+    CONF_DIR=${BASE_DIR}/conf
 
     if [ ! -d ${LOGS_DIR} ];then
         mkdir -p ${LOGS_DIR}
     fi
 
     echo "Setting up environment variable..."
-    JAVA_HOME=${WORK_DIR}/java8
+    JAVA_HOME=${BASE_DIR}/java8
 
     CLASSPATH=.:${JAVA_HOME}/lib/dt.jar:${JAVA_HOME}/lib.tools.jar
     CLASSPATH=${CLASSPATH}:${CONF_DIR}
