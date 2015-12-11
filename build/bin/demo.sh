@@ -17,6 +17,18 @@ usage()
     echo  "Usage: "${PROJECT}".sh [start|stop|restart|check]"
 }
 
+init()
+{
+    echo "enter init"
+
+    SCRIPT_DIR=`dirname $0`
+    SCRIPT_DIR=`cd ${SCRIPT_DIR}; pwd`
+
+    cd ..
+    BASE_DIR=`pwd`
+    echo "BASE_DIR dir:"${BASE_DIR}
+}
+
 checkUlimit()
 {
     echo "enter checkULimit"
@@ -34,15 +46,6 @@ checkUlimit()
 
 findProcess()
 {
-    echo "enter findProcess"
-    CURRENT_DIR=`dirname $0`
-    CURRENT_DIR=`cd ${CURRENT_DIR}; pwd`
-
-    cd ..
-    BASE_DIR=`pwd`
-    echo "BASE_DIR dir:"${BASE_DIR}
-    cd ${CURRENT_DIR}
-
     RET=`ps aux | grep ${MAIN_CLASS} | grep ${BASE_DIR} | grep -v "grep"`
     return 0
 }
@@ -51,7 +54,6 @@ checkProcess()
 {
     echo "enter checkProcess"
     findProcess
-#    echo "${RET}"
     if [ -n "${RET}" ];then
         echo ${RET} |awk '{print $2}' >${PROJECT}.pid
         RETVAL=0
@@ -66,7 +68,6 @@ checkPort()
 {
     echo "enter checkPort"
     RET=`netstat -anp|grep ${MAIN_PORT}`
-#    echo "${RET}"
     if [ -n "${RET}" ];then
         RETVAL=0
     else
@@ -114,15 +115,6 @@ start()
         RETVAL=1
         return ${RETVAL}
     fi
-
-    WORK_DIR=`dirname $0`
-    WORK_DIR=`cd ${WORK_DIR}; pwd`
-    echo "Work dir:"${WORK_DIR}
-
-    cd ${WORK_DIR}
-    cd ..
-    WORK_DIR=`pwd`
-    echo "Work dir:"${WORK_DIR}
 
     LOGS_DIR=${WORK_DIR}/log
     CONF_DIR=${WORK_DIR}/conf
@@ -193,6 +185,7 @@ stop()
      return ${RETVAL}
 }
 
+init
 RETVAL=1
 case "${ACTION}" in
     *restart)
