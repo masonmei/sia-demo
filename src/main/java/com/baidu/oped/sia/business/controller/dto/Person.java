@@ -12,14 +12,6 @@ public class Person implements Serializable {
     private int age;
     private String brief;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getAge() {
         return age;
     }
@@ -34,5 +26,13 @@ public class Person implements Serializable {
 
     public void setBrief(String brief) {
         this.brief = brief;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

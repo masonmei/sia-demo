@@ -30,20 +30,12 @@ public class ApplicationProperties {
         private String department;
         private String contact;
 
-        public String getVersion() {
-            return version;
+        public String getContact() {
+            return contact;
         }
 
-        public void setVersion(String version) {
-            this.version = version;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
+        public void setContact(String contact) {
+            this.contact = contact;
         }
 
         public String getDepartment() {
@@ -54,12 +46,20 @@ public class ApplicationProperties {
             this.department = department;
         }
 
-        public String getContact() {
-            return contact;
+        public String getDescription() {
+            return description;
         }
 
-        public void setContact(String contact) {
-            this.contact = contact;
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public String getVersion() {
+            return version;
+        }
+
+        public void setVersion(String version) {
+            this.version = version;
         }
     }
 }
