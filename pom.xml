@@ -210,9 +210,9 @@
                         <packageBranchRate>85</packageBranchRate>
                         <regexes>
                             <!--<regex>-->
-                                <!--<pattern>com.example.reallyimportant.*</pattern>-->
-                                <!--<branchRate>90</branchRate>-->
-                                <!--<lineRate>80</lineRate>-->
+                            <!--<pattern>com.example.reallyimportant.*</pattern>-->
+                            <!--<branchRate>90</branchRate>-->
+                            <!--<lineRate>80</lineRate>-->
                             <!--</regex>-->
                             <regex>
                                 <pattern>com.baidu.oped.sia.business.configuration.*</pattern>
@@ -225,7 +225,7 @@
                         <excludes>
                             <exclude>**/configuration/*.class</exclude>
                             <exclude>**/Application.class</exclude>
-                            <exclude>**/controller/*</exclude>
+                            <exclude>**/controller/**</exclude>
                         </excludes>
                     </instrumentation>
                 </configuration>

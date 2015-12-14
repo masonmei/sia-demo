@@ -1,6 +1,15 @@
 server:
   port: 8888
-
+  compression:
+    enabled: true
+    min-response-size: 1024
+    mime-types:
+      - application/json
+      - application/xml
+      - application/xhtml+xml
+      - text/html
+      - text/xml
+      - text/plain
 project:
   info:
     contact: meidongxu@baidu.com
