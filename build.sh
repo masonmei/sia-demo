@@ -10,12 +10,12 @@ echo "Setting up environment variables ..."
 
 MAVEN_HOME=${M2_HOME}
 if [ ! -d "${MAVEN_HOME}" ]; then
-    MAVEN_HOME=${WORK_DIR}/../thirdparty/maven/apache-maven-3.1.1
+    MAVEN_HOME=${BUILD_KIT_PATH}/maven/apache-maven-3.2.5
 fi
 
 JAVA_HOME=${JAVA_HOME}
 if [ ! -d "${JAVA_HOME}" ]; then
-    JAVA_HOME=$BUILD_KIT_PATH/java/jdk-1.7u60
+    JAVA_HOME=${BUILD_KIT_PATH}/java/jdk-1.8-8u20
 fi
 
 export MAVEN_HOME && export JAVA_HOME
