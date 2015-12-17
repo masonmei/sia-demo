@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Application Info Controller.
- * <p>
  *
  * @author mason
  */
@@ -23,8 +22,7 @@ public class ApplicationInfoController {
     @Autowired
     private ApplicationProperties properties;
 
-    @RequestMapping(value = {"info"},
-            method = RequestMethod.GET)
+    @RequestMapping(value = {"info"}, method = RequestMethod.GET)
     public ApplicationProperties.Info getApplicationInfo() {
         LOG.debug("invoking to get application info");
         return properties.getInfo();
