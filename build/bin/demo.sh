@@ -19,7 +19,7 @@ usage()
 
 init()
 {
-    echo "enter init"
+    echo "enter init function"
 
     SCRIPT_DIR=`dirname $0`
     SCRIPT_DIR=`cd ${SCRIPT_DIR}; pwd`
@@ -27,73 +27,67 @@ init()
 
     cd ..
     BASE_DIR=`pwd`
-    echo "BASE_DIR dir:"${BASE_DIR}
+    echo "Application base directory is : ${BASE_DIR}"
+    echo "Application starting script directory is : ${SCRIPT_DIR}"
+    return 0
 }
 
-checkUlimit()
+checkULimit()
 {
-    echo "enter checkULimit"
-    RET=`ulimit -n`
-#    echo "${RET}"
-    if [ ${RET} -lt 10000 ];then
-        echo "ulimit "${RET} "is less than 10000"
-        RETVAL=1
+    echo "enter checkULimit function"
+    RET_ULIMIT=`ulimit -n`
+    if [ ${RET_ULIMIT} -lt 10000 ];then
+        echo "ULimit is ${RET_ULIMIT}, less than 10000"
+        return 1
     else
-        RETVAL=0
+        return 0
     fi
-
-    return ${RETVAL}
 }
 
 findProcess()
 {
-    RET=`ps aux | grep ${MAIN_CLASS} | grep ${BASE_DIR} | grep -v "grep"`
+    echo "enter findProcess function"
+    RET_PROCESS=`ps aux | grep ${MAIN_CLASS} | grep ${BASE_DIR} | grep -v "grep"`
     return 0
 }
 
 checkProcess()
 {
-    echo "enter checkProcess"
+    echo "enter checkProcess function"
     findProcess
-    if [ -n "${RET}" ];then
-        echo ${RET} |awk '{print $2}' >${PROJECT}.pid
-        RETVAL=0
+    if [ -n "${RET_PROCESS}" ];then
+        echo ${RET_PROCESS} |awk '{print $2}' >${PROJECT}.pid
+        return 0
     else
-        RETVAL=1
+        return 1
     fi
-
-    return ${RETVAL}
 }
 
 checkPort()
 {
-    echo "enter checkPort"
-    RET=`netstat -anp|grep ${MAIN_PORT}`
-    if [ -n "${RET}" ];then
-        RETVAL=0
+    echo "enter checkPort function"
+    CHECK_PORT=`netstat -anp|grep ${MAIN_PORT}`
+    if [ -n "${CHECK_PORT}" ];then
+        return 0
     else
-        RETVAL=1
+        return 1
     fi
-
-    return ${RETVAL}
 }
 
 check()
 {
-    echo "enter check"
+    echo "enter check function"
     echo ${DATE} ${PROJECT} ${ACTION} "begin!"
     checkProcess
     PROCESS=`echo $?`
 
     if [ ${PROCESS} -eq 0 ];then
         echo ${DATE} ${PROJECT} ${ACTION} "success!"
-        RETVAL=0
+        return 0
     else
         echo ${DATE} ${PROJECT} ${ACTION} "fail!"
-        RETVAL=1
+        return 1
     fi
-
-    return ${RETVAL}
 }
 
 start()
@@ -102,19 +96,21 @@ start()
     echo ${DATE} ${PROJECT} ${ACTION} "begin!"
 
     checkProcess
-    PROCESS=`echo $?`
-    if [ ${PROCESS} -eq 0 ];then
-        echo ${PROJECT} "is already started!"
-        RETVAL=1
-        return ${RETVAL}
+    if [ $? -eq 0 ];then
+        echo "${PROJECT} is already started!"
+        return 1
     fi
 
-    checkUlimit
-    ULIMIT=`echo $?`
-    if [ ${ULIMIT} -eq 1 ];then
-        echo "ulimit is not enough!"
-        RETVAL=1
-        return ${RETVAL}
+    checkPort
+    if [ $? -eq 0 ]; then
+        echo "Port ${MAIN_PORT} has already been used!"
+        return 1
+    fi
+
+    checkULimit
+    if [ $? -eq 1 ];then
+        echo "ULimit is not enough!"
+        return 1
     fi
 
     LOGS_DIR=${BASE_DIR}/log
@@ -142,16 +138,13 @@ start()
     sleep 3
 
     checkProcess
-    PROCESS=`echo $?`
-    if [ ${PROCESS} -eq 0 ];then
+    if [ $? -eq 0 ];then
          echo ${DATE} ${PROJECT} ${ACTION} "success!"
-         RETVAL=0
+        return 0
     else
          echo ${DATE} ${PROJECT} ${ACTION} "fail!"
-         RETVAL=2
+         return 2
     fi
-
-    return ${RETVAL}
 }
 
 stop()
@@ -160,34 +153,28 @@ stop()
     echo ${DATE} ${PROJECT} ${ACTION} "begin!"
 
     checkProcess
-    PROCESS=`echo $?`
-    if [ ${PROCESS} -eq 1 ];then
-        echo ${PROJECT} "is already stopped!"
-        RETVAL=1
-        return ${RETVAL}
+    if [ $? -eq 1 ];then
+        echo "${PROJECT} is already stopped!"
+        return 1
     fi
 
-    SERVER_PIDS=`echo ${RET} | awk '{print $2}'`
-    for id in $SERVER_PIDS;do
+    SERVER_PIDS=`echo ${RET_PROCESS} | awk '{print $2}'`
+    for id in ${SERVER_PIDS};do
        kill -9 ${id}
        echo "kill process,pid:${id}"
     done
 
     checkProcess
-    PROCESS=`echo $?`
-    if [ ${PROCESS} -eq 0 ];then
+    if [ $? -eq 0 ];then
           echo ${DATE} ${PROJECT} ${ACTION} "fail!"
-          RETVAL=2
+          return 2
      else
           echo ${DATE} ${PROJECT} ${ACTION} "success!"
-          RETVAL=0
+          return 0
      fi
-
-     return ${RETVAL}
 }
 
 init
-RETVAL=1
 case "${ACTION}" in
     *restart)
     stop
@@ -215,5 +202,4 @@ case "${ACTION}" in
     usage
     ;;
 esac
-
-exit ${RETVAL}
+exit $?
