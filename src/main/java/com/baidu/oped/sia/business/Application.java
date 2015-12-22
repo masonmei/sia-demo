@@ -1,5 +1,6 @@
 package com.baidu.oped.sia.business;
 
+import com.baidu.oped.sia.boot.common.NormalizationResponseBodyAdvice;
 import com.baidu.oped.sia.boot.exception.SystemExceptionHandler;
 
 import org.springframework.boot.SpringApplication;
@@ -18,6 +19,11 @@ public class Application {
     @Bean
     public SystemExceptionHandler exceptionHandler() {
         return new SystemExceptionHandler();
+    }
+
+    @Bean
+    public NormalizationResponseBodyAdvice responseBodyAdvice() {
+        return new NormalizationResponseBodyAdvice();
     }
 
     public static void main(String[] args) {

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import javax.validation.Valid;
 
 /**
  * Test Controllers.
@@ -26,7 +27,7 @@ public class TestController {
     private static final Logger LOG = LoggerFactory.getLogger(TestController.class);
 
     @RequestMapping(value = "/receiveBody", method = RequestMethod.POST)
-    public String bigRequest(@RequestBody List<Person> persons) {
+    public String bigRequest(@RequestBody @Valid List<Person> persons) {
         System.out.println(persons);
         return String.valueOf(persons.size());
     }
