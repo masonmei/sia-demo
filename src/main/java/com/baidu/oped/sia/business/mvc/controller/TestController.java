@@ -58,6 +58,7 @@ public class TestController {
         for (int i = 0; i < count; i++) {
             references.add(new WeakReference<>(new byte[1024 * 1024]));
         }
+        LOG.debug("consumed {} MB memory", references.size());
     }
 
     @RequestMapping(value = "/consumeTime/{time}")

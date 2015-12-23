@@ -10,6 +10,8 @@ import javax.validation.constraints.NotNull;
  * @author mason
  */
 public class Person implements Serializable {
+    private static final long serialVersionUID = -3454758774684124324L;
+
     @NotNull
     private String name;
     @Min(value = 10, message = "com.baidu.oped.sia.business.mvc.dto.Person.age.min")
