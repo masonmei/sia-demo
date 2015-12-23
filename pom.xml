@@ -12,7 +12,6 @@
         <groupId>com.baidu.oped.sia.boot</groupId>
         <artifactId>custom-boot-starter-web-parent</artifactId>
         <version>0.0.2-SNAPSHOT</version>
-        <relativePath/>
     </parent>
 
     <properties>
@@ -59,4 +58,47 @@
         </dependency>
 
     </dependencies>
+
+    <!-- Baidu Repository Begin-->
+    <distributionManagement>
+        <repository>
+            <id>Baidu_Local</id>
+            <url>http://maven.scm.baidu.com:8081/nexus/content/repositories/Baidu_Local</url>
+        </repository>
+        <snapshotRepository>
+            <id>Baidu_Local_Snapshots</id>
+            <url>http://maven.scm.baidu.com:8081/nexus/content/repositories/Baidu_Local_Snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+    <repositories>
+        <repository>
+            <id>baidu-nexus</id>
+            <url>http://maven.scm.baidu.com:8081/nexus/content/groups/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <!--设定除中央仓库(repo1.maven.org/maven2/)外的其他仓库,按设定顺序进行查找-->
+        <repository>
+            <id>Baidu Nexus snapshots</id>
+            <name>Nexus Public Repository</name>
+            <url>http://maven.scm.baidu.com:8081/nexus/content/groups/public-snapshots</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>baidu-nexus</id>
+            <url>http://maven.scm.baidu.com:8081/nexus/content/groups/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+    <!-- Baidu Repository End -->
 </project>
