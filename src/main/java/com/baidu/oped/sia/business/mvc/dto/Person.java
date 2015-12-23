@@ -1,4 +1,4 @@
-package com.baidu.oped.sia.business.controller.dto;
+package com.baidu.oped.sia.business.mvc.dto;
 
 import java.io.Serializable;
 import javax.validation.constraints.Min;
@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 public class Person implements Serializable {
     @NotNull
     private String name;
-    @Min(value = 10, message = "com.baidu.oped.sia.business.controller.dto.Person.age.min")
+    @Min(value = 10, message = "com.baidu.oped.sia.business.mvc.dto.Person.age.min")
     private int age;
     private String brief;
 

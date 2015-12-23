@@ -1,4 +1,4 @@
-package com.baidu.oped.sia.business.controller;
+package com.baidu.oped.sia.business.mvc.controller;
 
 import com.baidu.oped.sia.business.configuration.ApplicationProperties;
 

@@ -1,6 +1,6 @@
-package com.baidu.oped.sia.business.controller;
+package com.baidu.oped.sia.business.mvc.controller;
 
-import com.baidu.oped.sia.business.controller.dto.Person;
+import com.baidu.oped.sia.business.mvc.dto.Person;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
