@@ -16,6 +16,10 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication(exclude = {ErrorMvcAutoConfiguration.class})
 public class Application {
 
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+
     @Bean
     public SystemExceptionHandler exceptionHandler() {
         return new SystemExceptionHandler();
@@ -24,9 +28,5 @@ public class Application {
     @Bean
     public NormalizationResponseBodyAdvice responseBodyAdvice() {
         return new NormalizationResponseBodyAdvice();
-    }
-
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
     }
 }

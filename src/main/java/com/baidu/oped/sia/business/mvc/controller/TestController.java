@@ -38,41 +38,16 @@ public class TestController {
         return "DONE";
     }
 
-    private void calculateSum(int to) {
-        int sum = 0;
-        while (to-- > 0) {
-            sum += to;
-        }
-        System.out.println(sum);
-    }
-
     @RequestMapping(value = "/consumeMem/{mem}")
     public String consumeMemory(@PathVariable("mem") int memory) {
         prepareMemory(memory);
         return "DONE";
     }
 
-    private void prepareMemory(int count) {
-        List<WeakReference<byte[]>> references = new ArrayList<>();
-
-        for (int i = 0; i < count; i++) {
-            references.add(new WeakReference<>(new byte[1024 * 1024]));
-        }
-        LOG.debug("consumed {} MB memory", references.size());
-    }
-
     @RequestMapping(value = "/consumeTime/{time}")
     public String consumeTime(@PathVariable("time") int timeInMs) {
         sleep(timeInMs);
         return "DONE";
-    }
-
-    private void sleep(int ms) {
-        try {
-            Thread.sleep(ms);
-        } catch (InterruptedException e) {
-            LOG.warn("sleep failed.");
-        }
     }
 
     @RequestMapping(value = "/persons", method = RequestMethod.GET)
@@ -86,5 +61,30 @@ public class TestController {
             persons.add(person);
         }
         return persons;
+    }
+
+    private void calculateSum(int to) {
+        int sum = 0;
+        while (to-- > 0) {
+            sum += to;
+        }
+        System.out.println(sum);
+    }
+
+    private void prepareMemory(int count) {
+        List<WeakReference<byte[]>> references = new ArrayList<>();
+
+        for (int i = 0; i < count; i++) {
+            references.add(new WeakReference<>(new byte[1024 * 1024]));
+        }
+        LOG.debug("consumed {} MB memory", references.size());
+    }
+
+    private void sleep(int ms) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            LOG.warn("sleep failed.");
+        }
     }
 }
